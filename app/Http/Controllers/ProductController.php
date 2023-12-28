@@ -60,12 +60,13 @@ class ProductController extends Controller
     public function filter(Request $request, Category $category) {
         $category = Category::get()->all();
         $filter = $request->input('filter');
-  
+        
             $product = Product::where('category_id', $filter)->latest()->paginate(10);
             if ($product->isEmpty()) {
                 return redirect()->back()->with('error', 'nenhum produto encontrado, voltando a página inicial...');
             }
-            return view('welcome', compact('product','category'));
+            $categoryName = Category::find($filter)->category;
+            return view('welcome', compact('product','category', 'categoryName'));
     }
 
 
